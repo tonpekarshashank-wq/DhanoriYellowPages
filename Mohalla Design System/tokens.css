@@ -1,0 +1,99 @@
+/* Mohalla — generated from tokens.json */
+:root, [data-theme="light"] {
+  --surface-page: #f5f7fa;
+  --surface-card: #ffffff;
+  --surface-sunken: #eef2f6;
+  --border: #d5dce4;
+  --border-strong: #7a8599;
+  --ink: #0f172a;
+  --ink-muted: #475569;
+  --ink-inverse: #ffffff;
+  --primary: #0b3d66;
+  --primary-hover: #082f4f;
+  --primary-soft: #e8f0f8;
+  --accent: #c2410c;
+  --accent-soft: #ffedd5;
+  --on-accent-soft: #9a3412;
+  --focus-ring: var(--accent);
+  --trust: #15803d;
+  --trust-hover: #166534;
+  --trust-soft: #dcfce7;
+  --on-trust-soft: #166534;
+  --danger: #b91c1c;
+  --danger-soft: #fee2e2;
+  --on-danger-soft: #991b1b;
+  --warning-soft: #fef3c7;
+  --on-warning-soft: #854d0e;
+  --neutral-badge: #eef2f6;
+  --on-neutral-badge: #334155;
+  --rating-star: #b45309;
+  --shadow-none: none;
+  --shadow-card: 0 1px 2px rgba(15,23,42,0.06), 0 1px 3px rgba(15,23,42,0.10);
+  --shadow-raised: 0 4px 12px rgba(15,23,42,0.12), 0 1px 3px rgba(15,23,42,0.08);
+}
+[data-theme="dark"] {
+  --surface-page: #0d1520;
+  --surface-card: #152131;
+  --surface-sunken: #0a111a;
+  --border: #24344a;
+  --border-strong: #66788f;
+  --ink: #e6edf5;
+  --ink-muted: #9fb0c3;
+  --ink-inverse: #0d1520;
+  --primary: #7cb8ee;
+  --primary-hover: #a3cdf3;
+  --primary-soft: #12304d;
+  --accent: #fb923c;
+  --accent-soft: #3a1d0c;
+  --on-accent-soft: #fdba74;
+  --focus-ring: var(--accent);
+  --trust: #4ade80;
+  --trust-hover: #86efac;
+  --trust-soft: #10291b;
+  --on-trust-soft: #86efac;
+  --danger: #f87171;
+  --danger-soft: #3b1414;
+  --on-danger-soft: #fca5a5;
+  --warning-soft: #33280b;
+  --on-warning-soft: #fde68a;
+  --neutral-badge: #1e2c3f;
+  --on-neutral-badge: #c5d1de;
+  --rating-star: #fbbf24;
+  --shadow-none: none;
+  --shadow-card: 0 1px 2px rgba(0,0,0,0.40), 0 1px 3px rgba(0,0,0,0.50);
+  --shadow-raised: 0 4px 16px rgba(0,0,0,0.55);
+}
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+  --tap-min: 48px;
+  --search-height: 52px;
+  --icon-md: 20px;
+  --icon-sm: 16px;
+  --content-max: 1200px;
+  --bp-sm: 640px;
+  --bp-md: 768px;
+  --bp-lg: 1200px;
+  --font-display: "Plus Jakarta Sans", "Noto Sans Devanagari", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-sans: Inter, "Noto Sans Devanagari", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+.title-page { font-family: var(--font-display); font-size: 28px; line-height: 34px; font-weight: 800; letter-spacing: -0.02em; }
+.title-section { font-family: var(--font-display); font-size: 20px; line-height: 28px; font-weight: 700; letter-spacing: -0.01em; }
+.title-card { font-family: var(--font-display); font-size: 18px; line-height: 24px; font-weight: 700; letter-spacing: -0.005em; }
+.body { font-family: var(--font-sans); font-size: 16px; line-height: 24px; font-weight: 400; letter-spacing: 0; }
+.body-strong { font-family: var(--font-sans); font-size: 16px; line-height: 24px; font-weight: 600; letter-spacing: 0; }
+.meta { font-family: var(--font-sans); font-size: 14px; line-height: 20px; font-weight: 500; letter-spacing: 0; }
+.badge { font-family: var(--font-sans); font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: 0.02em; }
+.button { font-family: var(--font-sans); font-size: 16px; line-height: 24px; font-weight: 600; letter-spacing: 0; }

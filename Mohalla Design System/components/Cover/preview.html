@@ -1,0 +1,54 @@
+<!-- @dsCard height=288 -->
+<!doctype html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="../../tokens.css"><link rel="stylesheet" href="../bundle.css">
+<meta charset="utf-8">
+<title>Mohalla</title>
+<style>
+  html, body { margin:0; height:100%; }
+  body { background:var(--surface-page); color:var(--ink); font-family:var(--font-sans); overflow:hidden; }
+  .cover { position:relative; width:960px; height:288px; overflow:hidden; }
+  .art { position:absolute; top:0; left:480px; width:480px; height:288px; overflow:hidden; }
+  .art svg { display:block; }
+  .brand { fill:var(--primary); }
+  .acc { fill:var(--accent); }
+  .trust { fill:var(--trust); }
+  .cut { fill:var(--surface-card); }
+  .on-ground { fill:var(--primary); }
+  .active { fill:var(--accent-soft); }
+  .blk { rx:var(--radius-lg); }
+  .pill { rx:12px; }
+  .words { position:absolute; left:var(--space-8); bottom:var(--space-8); max-width:440px; }
+  .name { margin:0; font-family:var(--font-display); font-size:104px; line-height:.92; font-weight:800; letter-spacing:-.03em; color:var(--ink); }
+  .tag { margin:var(--space-3) 0 0 4px; font-size:14px; line-height:20px; color:var(--ink-muted); }
+</style>
+</head>
+<body>
+<div class="cover">
+<div class="art" aria-hidden="true">
+<svg viewBox="0 0 480 288" width="480" height="288">
+<!--
+  blocks      primary 176×264 slab bled off the top (the brand, largest) · trust 160×192 bleeding off the right edge (trust is the product, so it is identity here) · accent 112×128 between them — ≈30% of 960×288
+  arrangement one tall navy slab with two satellites, bottoms on one line space-10 above the edge, space-4 gutters
+  pattern     pills from the locality chips (radius-full is the system's signature shape: search pill + chips): space-6-tall pills at a space-8 pitch cut into the slab in surface-card, one "active" chip in accent-soft, two loose on the ground in primary
+  scales      sides in space-4 multiples; gutters space-4; pitch space-8; block corners radius-lg; pill rx = half of space-6 (radius-full)
+-->
+<rect class="brand blk" x="16" y="-16" width="176" height="264" rx="16"/>
+<rect class="acc blk" x="208" y="120" width="112" height="128" rx="16"/>
+<rect class="trust blk" x="336" y="56" width="160" height="192" rx="16"/>
+<rect class="cut pill" x="32" y="120" width="104" height="24" rx="12"/>
+<rect class="active pill" x="32" y="152" width="72" height="24" rx="12"/>
+<rect class="cut pill" x="32" y="184" width="128" height="24" rx="12"/>
+<rect class="cut pill" x="32" y="216" width="56" height="24" rx="12"/>
+<rect class="on-ground pill" x="208" y="56" width="88" height="24" rx="12"/>
+<rect class="on-ground pill" x="208" y="88" width="56" height="24" rx="12"/>
+</svg>
+</div>
+<div class="words">
+  <h1 class="name">Mohalla</h1>
+  <p class="tag">Trusted help, two lanes away.</p>
+</div>
+</div>
+</body>
+</html>
