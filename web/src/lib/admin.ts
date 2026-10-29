@@ -230,3 +230,309 @@ export async function getAuditLog(limit = 50, offset = 0) {
 
   return rows;
 }
+
+/* ==========================================================================
+   Submissions
+   ========================================================================== */
+
+export async function getAdminSubmissions(opts: {
+  page?: number;
+  limit?: number;
+  status?: string;
+}) {
+  const sql = getSql();
+  const { page = 1, limit = 25, status } = opts;
+  const offset = (page - 1) * limit;
+
+  const rows = await sql`
+    SELECT id, type, name, primary_service as "primaryService",
+      phone, category_slug as "categorySlug",
+      sub_locality_slug as "subLocalitySlug",
+      submitter_name as "submitterName",
+      submitter_relation as "submitterRelation",
+      status, created_at as "createdAt",
+      merged_into_listing_id as "mergedIntoListingId"
+    FROM submissions
+    WHERE 1=1 ${status ? sql`AND status = ${status}` : sql``}
+    ORDER BY created_at DESC
+    LIMIT ${limit} OFFSET ${offset}
+  `;
+
+  const countResult = await sql`
+    SELECT COUNT(*)::int as total FROM submissions
+    WHERE 1=1 ${status ? sql`AND status = ${status}` : sql``}
+  `;
+
+  return {
+    submissions: rows,
+    total: (countResult[0]?.total as number) ?? 0,
+    page,
+    totalPages: Math.ceil(((countResult[0]?.total as number) ?? 0) / limit),
+  };
+}
+
+export async function getSubmissionById(id: number) {
+  const sql = getSql();
+  const rows = await sql`SELECT * FROM submissions WHERE id = ${id}`;
+  return rows[0] ?? null;
+}
+
+export async function approveSubmission(id: number, adminUserId: number) {
+  const sql = getSql();
+
+  const sub = await getSubmissionById(id);
+  if (!sub || sub.status !== "pending") return null;
+
+  // Resolve category and sub-locality IDs
+  let categoryId: number | null = null;
+  if (sub.category_slug) {
+    const cat = await sql`SELECT id FROM categories WHERE slug = ${sub.category_slug}`;
+    categoryId = (cat[0]?.id as number) ?? null;
+  }
+  if (!categoryId) {
+    const fallback = await sql`SELECT id FROM categories ORDER BY sort_order LIMIT 1`;
+    categoryId = fallback[0]?.id as number;
+  }
+
+  let subLocalityId: number | null = null;
+  if (sub.sub_locality_slug) {
+    const sl = await sql`SELECT id FROM sub_localities WHERE slug = ${sub.sub_locality_slug}`;
+    subLocalityId = (sl[0]?.id as number) ?? null;
+  }
+  if (!subLocalityId) {
+    const fallback = await sql`SELECT id FROM sub_localities ORDER BY sort_order LIMIT 1`;
+    subLocalityId = fallback[0]?.id as number;
+  }
+
+  // Create slug
+  const nameSlug = (sub.name as string)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+  const slug = `${nameSlug}-${Date.now().toString(36)}`;
+
+  // Insert as new listing
+  const inserted = await sql`
+    INSERT INTO listings (
+      name, slug, primary_service, category_id, sub_locality_id,
+      phone, whatsapp, address, landmark, description, services,
+      status, source
+    ) VALUES (
+      ${sub.name}, ${slug}, ${sub.primary_service},
+      ${categoryId}, ${subLocalityId},
+      ${sub.phone}, ${sub.whatsapp}, ${sub.address}, ${sub.landmark},
+      ${sub.description}, ${sub.services},
+      'community_submitted', ${sub.type === "provider" ? "provider_form" : "suggest_form"}
+    ) RETURNING id
+  `;
+
+  const listingId = inserted[0]?.id as number;
+
+  // Update submission
+  await sql`
+    UPDATE submissions SET
+      status = 'approved',
+      merged_into_listing_id = ${listingId},
+      reviewed_by = ${adminUserId},
+      reviewed_at = NOW()
+    WHERE id = ${id}
+  `;
+
+  // Audit
+  await sql`
+    INSERT INTO audit_log (user_id, action, entity_type, entity_id, changes)
+    VALUES (${adminUserId}, 'submission.approve', 'submission', ${id},
+      ${JSON.stringify({ listingId, name: sub.name })})
+  `;
+
+  return listingId;
+}
+
+export async function rejectSubmission(id: number, adminUserId: number, notes?: string) {
+  const sql = getSql();
+
+  await sql`
+    UPDATE submissions SET
+      status = 'rejected',
+      reviewed_by = ${adminUserId},
+      reviewed_at = NOW(),
+      notes = ${notes ?? null}
+    WHERE id = ${id} AND status = 'pending'
+  `;
+
+  await sql`
+    INSERT INTO audit_log (user_id, action, entity_type, entity_id, changes)
+    VALUES (${adminUserId}, 'submission.reject', 'submission', ${id},
+      ${JSON.stringify({ notes })})
+  `;
+}
+
+/* ==========================================================================
+   Reports
+   ========================================================================== */
+
+export async function getAdminReports(opts: {
+  page?: number;
+  limit?: number;
+  resolved?: boolean;
+}) {
+  const sql = getSql();
+  const { page = 1, limit = 25, resolved } = opts;
+  const offset = (page - 1) * limit;
+
+  const rows = await sql`
+    SELECT r.id, r.reason, r.details, r.resolved,
+      r.created_at as "createdAt",
+      l.id as "listingId", l.name as "listingName", l.slug as "listingSlug"
+    FROM reports r
+    JOIN listings l ON r.listing_id = l.id
+    WHERE 1=1 ${resolved !== undefined ? sql`AND r.resolved = ${resolved}` : sql``}
+    ORDER BY r.resolved ASC, r.created_at DESC
+    LIMIT ${limit} OFFSET ${offset}
+  `;
+
+  const countResult = await sql`
+    SELECT COUNT(*)::int as total FROM reports r
+    WHERE 1=1 ${resolved !== undefined ? sql`AND r.resolved = ${resolved}` : sql``}
+  `;
+
+  return {
+    reports: rows,
+    total: (countResult[0]?.total as number) ?? 0,
+    page,
+    totalPages: Math.ceil(((countResult[0]?.total as number) ?? 0) / limit),
+  };
+}
+
+export async function resolveReport(id: number, adminUserId: number) {
+  const sql = getSql();
+
+  const rows = await sql`
+    UPDATE reports SET
+      resolved = true,
+      resolved_by = ${adminUserId},
+      resolved_at = NOW()
+    WHERE id = ${id} AND resolved = false
+    RETURNING listing_id as "listingId"
+  `;
+
+  if (rows.length > 0) {
+    // Decrement open report count on listing
+    await sql`
+      UPDATE listings SET
+        open_report_count = GREATEST(open_report_count - 1, 0)
+      WHERE id = ${rows[0].listingId}
+    `;
+  }
+
+  return rows.length > 0;
+}
+
+/* ==========================================================================
+   Taxonomy (categories, sub-categories, sub-localities)
+   ========================================================================== */
+
+export async function getFullTaxonomy() {
+  const sql = getSql();
+
+  const [categories, subCategories, subLocalities, synonyms] = await Promise.all([
+    sql`SELECT id, name, slug, name_mr as "nameMarathi", name_hi as "nameHindi",
+      is_emergency as "isEmergency", sort_order as "sortOrder"
+    FROM categories ORDER BY sort_order`,
+    sql`SELECT sc.id, sc.name, sc.slug, sc.category_id as "categoryId",
+      sc.sort_order as "sortOrder", c.name as "categoryName"
+    FROM sub_categories sc
+    JOIN categories c ON sc.category_id = c.id
+    ORDER BY c.sort_order, sc.sort_order`,
+    sql`SELECT id, name, slug, name_mr as "nameMarathi", name_hi as "nameHindi",
+      aliases, sort_order as "sortOrder"
+    FROM sub_localities ORDER BY sort_order`,
+    sql`SELECT id, term, synonyms, language FROM synonyms ORDER BY term`,
+  ]);
+
+  return { categories, subCategories, subLocalities, synonyms };
+}
+
+/* ==========================================================================
+   Admin users
+   ========================================================================== */
+
+export async function getAdminUsers() {
+  const sql = getSql();
+  return sql`
+    SELECT id, email, name, role, image,
+      last_login_at as "lastLoginAt",
+      created_at as "createdAt"
+    FROM admin_users ORDER BY created_at
+  `;
+}
+
+export async function addAdminUser(email: string, role: string = "editor") {
+  const sql = getSql();
+  const existing = await sql`SELECT id FROM admin_users WHERE email = ${email.toLowerCase().trim()}`;
+  if (existing.length > 0) return null;
+
+  const rows = await sql`
+    INSERT INTO admin_users (email, role)
+    VALUES (${email.toLowerCase().trim()}, ${role})
+    RETURNING id, email, role
+  `;
+  return rows[0];
+}
+
+export async function removeAdminUser(id: number): Promise<boolean> {
+  const sql = getSql();
+  const count = await sql`SELECT COUNT(*)::int as c FROM admin_users WHERE role = 'admin'`;
+  const admins = (count[0]?.c as number) ?? 0;
+
+  const user = await sql`SELECT role FROM admin_users WHERE id = ${id}`;
+  if (user[0]?.role === "admin" && admins <= 1) {
+    return false;
+  }
+
+  await sql`DELETE FROM admin_users WHERE id = ${id}`;
+  return true;
+}
+
+/* ==========================================================================
+   CSV Export
+   ========================================================================== */
+
+export async function exportListingsCSV(): Promise<string> {
+  const sql = getSql();
+
+  const rows = await sql`
+    SELECT l.id, l.name, l.slug, l.primary_service, l.phone, l.whatsapp,
+      l.address, l.landmark, l.description, l.status,
+      l.is_24x7, l.emergency_available, l.paid_plan,
+      l.rating_avg, l.rating_count,
+      c.name as category, sl.name as sub_locality,
+      l.created_at, l.updated_at
+    FROM listings l
+    JOIN categories c ON l.category_id = c.id
+    JOIN sub_localities sl ON l.sub_locality_id = sl.id
+    ORDER BY l.id
+  `;
+
+  const headers = [
+    "id", "name", "slug", "primary_service", "phone", "whatsapp",
+    "address", "landmark", "description", "status",
+    "is_24x7", "emergency_available", "paid_plan",
+    "rating_avg", "rating_count", "category", "sub_locality",
+    "created_at", "updated_at",
+  ];
+
+  const csvRows = [headers.join(",")];
+  for (const row of rows) {
+    const values = headers.map((h) => {
+      const val = row[h] ?? "";
+      const str = String(val);
+      return str.includes(",") || str.includes('"') || str.includes("\n")
+        ? `"${str.replace(/"/g, '""')}"`
+        : str;
+    });
+    csvRows.push(values.join(","));
+  }
+
+  return csvRows.join("\n");
+}
