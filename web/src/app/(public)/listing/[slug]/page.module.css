@@ -1,0 +1,279 @@
+/* ==========================================================================
+   Listing detail page (S4)
+   ========================================================================== */
+
+.page {
+  padding-bottom: 80px; /* space for sticky bar on mobile */
+}
+
+@media (min-width: 768px) {
+  .page {
+    padding-bottom: 0;
+  }
+}
+
+.content {
+  max-width: 800px;
+  padding-top: 16px;
+  padding-bottom: 32px;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  color: var(--ink-muted);
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.breadcrumb a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.headerLeft {
+  min-width: 0;
+  flex: 1;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+/* Trust + rating row */
+.trustRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.875rem;
+}
+
+/* Info grid */
+.infoGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+@media (min-width: 768px) {
+  .infoGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.infoSection {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface-card);
+}
+
+.infoSection h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: 1.125rem;
+}
+
+/* Hours table */
+.hoursTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.hoursTable td {
+  padding: 6px 0;
+  font-size: 0.875rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.hoursTable tr:last-child td {
+  border-bottom: none;
+}
+
+.hoursDay {
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.hoursTime {
+  text-align: right;
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.hoursToday .hoursDay {
+  font-weight: 700;
+  color: var(--trust);
+}
+
+.todayBadge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--trust-soft);
+  color: var(--on-trust-soft);
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  vertical-align: middle;
+}
+
+/* Map link */
+.mapLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.mapLink:hover {
+  text-decoration: underline;
+}
+
+/* Serves tags */
+.servesTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* Services list */
+.servicesList {
+  list-style: none;
+  padding: 0;
+}
+
+.servicesList li {
+  padding: 6px 0;
+  font-size: 0.875rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--ink);
+}
+
+.servicesList li:last-child {
+  border-bottom: none;
+}
+
+.servicesList li::before {
+  content: "•";
+  color: var(--trust);
+  font-weight: 700;
+  margin-right: 8px;
+}
+
+/* Reviews */
+.reviews {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+
+.reviewList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.reviewCard {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-card);
+}
+
+.reviewHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.reviewStars {
+  display: flex;
+  gap: 2px;
+}
+
+/* Action links */
+.actionLinks {
+  display: flex;
+  gap: 16px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.actionLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--ink-muted);
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.actionLink:hover {
+  color: var(--primary);
+}
+
+/* Sticky bottom bar (mobile only) */
+.stickyBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 90;
+  background: var(--surface-card);
+  border-top: 1px solid var(--border);
+  box-shadow: var(--shadow-raised);
+  padding: 12px 0;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+}
+
+@media (min-width: 768px) {
+  .stickyBar {
+    display: none;
+  }
+}
