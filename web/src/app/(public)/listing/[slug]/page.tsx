@@ -17,6 +17,7 @@ import {
   FlagIcon,
   ExternalLinkIcon,
 } from "@/components/ui/Icons";
+import { ReviewForm } from "@/components/listings/ReviewForm";
 import type { HourEntry } from "@/lib/status";
 import styles from "./page.module.css";
 
@@ -381,6 +382,8 @@ export default async function ListingDetailPage({ params }: PageProps) {
                 No reviews yet. Be the first to review this business.
               </p>
             )}
+
+            <ReviewForm listingId={listing.id} listingName={listing.name} />
           </section>
 
           {/* Action links */}
