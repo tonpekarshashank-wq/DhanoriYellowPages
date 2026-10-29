@@ -1,0 +1,77 @@
+{
+  "site_name": "Dhanori Yellow Pages",
+  "tagline": "Trusted help, two lanes away.",
+  "search_placeholder": "Search for services…",
+  "search_placeholder_examples": [
+    "24h chemist",
+    "plumber near me",
+    "Porwal Road gym",
+    "electrician Dhanori"
+  ],
+  "quick_chips": {
+    "emergency": "Emergency",
+    "pharmacy_24h": "24/7 Pharmacy",
+    "msedcl": "MSEDCL",
+    "water_tanker": "Water Tanker",
+    "electrician": "Electrician",
+    "plumber": "Plumber"
+  },
+  "filters": {
+    "category": "Category",
+    "sub_locality": "Area",
+    "open_now": "Open now",
+    "verified_only": "Verified only"
+  },
+  "card": {
+    "call": "Call",
+    "whatsapp": "WhatsApp",
+    "message": "Message",
+    "verified": "Verified",
+    "community_submitted": "Community",
+    "promoted": "Promoted",
+    "open_now": "Open now",
+    "open_24h": "Open 24 hours",
+    "closes_soon": "Closes soon",
+    "closed": "Closed",
+    "opens_at": "Opens at",
+    "until": "Until",
+    "reviews": "reviews"
+  },
+  "emergency": {
+    "title": "Emergency Numbers",
+    "police": "Police",
+    "fire": "Fire",
+    "ambulance": "Ambulance",
+    "call_now": "Call now"
+  },
+  "empty": {
+    "no_results_title": "No {service} in {area} yet",
+    "no_results_body": "We couldn't find a verified {service} here. These nearby areas have some:",
+    "search_wider": "Search within 5 km",
+    "suggest": "Recommend someone",
+    "too_narrow_title": "Nothing matches all filters",
+    "too_narrow_body": "Try removing a filter.",
+    "clear_filters": "Clear filters",
+    "offline_title": "You're offline",
+    "offline_body": "Results will load when you're back online. Saved providers still work.",
+    "error_title": "Something went wrong on our side",
+    "error_body": "It's not you. Give it a moment and try again.",
+    "try_again": "Try again"
+  },
+  "add_business": {
+    "title": "Add your business",
+    "subtitle": "Basic listings are free."
+  },
+  "footer": {
+    "free_notice": "Basic listings are free. Paid and promoted listings are always labelled.",
+    "about": "About",
+    "how_we_verify": "How we verify",
+    "add_business": "Add your business",
+    "get_featured": "Get featured"
+  },
+  "meta": {
+    "results_count": "{count} results in {area}",
+    "sort_nearest": "Sort: Nearest",
+    "last_verified": "Last verified on {date}"
+  }
+}

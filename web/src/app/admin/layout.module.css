@@ -1,0 +1,49 @@
+.adminLayout {
+  display: flex;
+  min-height: 100dvh;
+}
+
+.sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background: var(--primary);
+  color: var(--ink-inverse);
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebarHeader {
+  padding: 20px 16px;
+  font-size: 1rem;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.sidebarNav {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0;
+}
+
+.sidebarLink {
+  display: block;
+  padding: 10px 16px;
+  color: var(--ink-inverse);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  opacity: 0.85;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+}
+
+.sidebarLink:hover {
+  background: rgba(255, 255, 255, 0.1);
+  opacity: 1;
+  text-decoration: none;
+}
+
+.content {
+  flex: 1;
+  padding: 24px 32px;
+  overflow-y: auto;
+}

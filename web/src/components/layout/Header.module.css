@@ -1,0 +1,105 @@
+.header {
+  background: var(--primary);
+  color: var(--ink-inverse);
+  height: 56px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink-inverse);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.logo:hover {
+  text-decoration: none;
+}
+
+.logoMark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--ink-inverse);
+  color: var(--primary);
+  font-size: 0.875rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.logoText {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* Hide full name on small screens */
+@media (max-width: 480px) {
+  .logoText {
+    display: none;
+  }
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.navLink {
+  color: var(--ink-inverse);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  opacity: 0.9;
+  transition: opacity 0.15s ease;
+}
+
+.navLink:hover {
+  opacity: 1;
+  text-decoration: none;
+}
+
+/* Hide nav text on very small screens */
+@media (max-width: 360px) {
+  .navLink {
+    font-size: 0.75rem;
+  }
+}
+
+.langButton {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--ink-inverse);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.langButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.langLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}

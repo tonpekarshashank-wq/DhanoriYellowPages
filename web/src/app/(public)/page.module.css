@@ -1,0 +1,156 @@
+/* ==========================================================================
+   Home page (S1) — Google-style: search first, nothing else above the fold
+   ========================================================================== */
+
+.page {
+  min-height: 100dvh;
+}
+
+/* Hero */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 16px 32px;
+  text-align: center;
+}
+
+.heroInner {
+  width: 100%;
+  max-width: 640px;
+}
+
+.title {
+  margin-bottom: 8px;
+  color: var(--ink);
+}
+
+.subtitle {
+  color: var(--ink-muted);
+  margin-bottom: 24px;
+}
+
+.searchForm {
+  margin-bottom: 20px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Emergency strip */
+.emergencyStrip {
+  background: var(--danger-soft);
+  padding: 12px 0;
+}
+
+.emergencyInner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.emergencyLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--on-danger-soft);
+  white-space: nowrap;
+}
+
+.emergencyNumbers {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.emergencyNumber {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.875rem;
+  color: var(--on-danger-soft);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.emergencyNumber:hover {
+  text-decoration: underline;
+}
+
+.emergencyNumber strong {
+  font-weight: 700;
+}
+
+/* Categories */
+.categories {
+  padding: 32px 0;
+}
+
+.sectionTitle {
+  margin-bottom: 16px;
+}
+
+.categoryGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+@media (min-width: 768px) {
+  .categoryGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .categoryGrid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.categoryCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 12px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface-card);
+  text-decoration: none;
+  color: var(--ink);
+  text-align: center;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.categoryCard:hover {
+  box-shadow: var(--shadow-card);
+  border-color: var(--border-strong);
+  text-decoration: none;
+}
+
+.categoryEmoji {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.categoryName {
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+}
+
+/* CTA section */
+.ctaSection {
+  padding: 48px 0;
+  background: var(--surface-sunken);
+  border-top: 1px solid var(--border);
+}
