@@ -1,3 +1,6 @@
+import { redirect } from "next/navigation";
+import { auth } from "@/lib/auth";
+import { AdminSidebar } from "./AdminSidebar";
 import styles from "./layout.module.css";
 
 export const metadata = {
@@ -5,27 +8,20 @@ export const metadata = {
   robots: "noindex, nofollow",
 };
 
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await auth();
+  if (!session?.user) redirect("/admin/login");
+
   return (
     <div className={styles.adminLayout}>
-      <aside className={styles.sidebar}>
-        <div className={styles.sidebarHeader}>
-          <strong>DYP Admin</strong>
-        </div>
-        <nav className={styles.sidebarNav}>
-          <a href="/admin/dashboard" className={styles.sidebarLink}>Dashboard</a>
-          <a href="/admin/listings" className={styles.sidebarLink}>Listings</a>
-          <a href="/admin/submissions" className={styles.sidebarLink}>Submissions</a>
-          <a href="/admin/reports" className={styles.sidebarLink}>Reports</a>
-          <a href="/admin/reviews" className={styles.sidebarLink}>Reviews</a>
-          <a href="/admin/taxonomy" className={styles.sidebarLink}>Taxonomy</a>
-          <a href="/admin/users" className={styles.sidebarLink}>Users</a>
-        </nav>
-      </aside>
+      <AdminSidebar
+        userName={session.user.name ?? session.user.email ?? "Admin"}
+        userImage={session.user.image ?? undefined}
+      />
       <main className={styles.content}>{children}</main>
     </div>
   );

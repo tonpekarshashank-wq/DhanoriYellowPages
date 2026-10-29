@@ -23,6 +23,7 @@
   display: flex;
   flex-direction: column;
   padding: 8px 0;
+  flex: 1;
 }
 
 .sidebarLink {
@@ -32,7 +33,7 @@
   text-decoration: none;
   font-size: 0.875rem;
   font-weight: 500;
-  opacity: 0.85;
+  opacity: 0.75;
   transition: background-color 0.15s ease, opacity 0.15s ease;
 }
 
@@ -42,8 +43,55 @@
   text-decoration: none;
 }
 
+.sidebarLinkActive {
+  background: rgba(255, 255, 255, 0.15);
+  opacity: 1;
+  border-left: 3px solid var(--accent);
+}
+
+.sidebarFooter {
+  padding: 12px 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.userAvatar {
+  border-radius: 50%;
+}
+
+.userName {
+  font-size: 0.75rem;
+  opacity: 0.85;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.signOutBtn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--ink-inverse);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.15s ease;
+}
+
+.signOutBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
 .content {
   flex: 1;
   padding: 24px 32px;
   overflow-y: auto;
+  background: var(--surface-sunken);
 }
