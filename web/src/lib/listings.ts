@@ -109,6 +109,22 @@ export async function getListingBySlug(
 }
 
 /**
+ * Fetch minimal listing info by ID (for report page, etc.)
+ */
+export async function getListingById(
+  id: number
+): Promise<{ id: number; name: string; slug: string } | null> {
+  const sql = getSql();
+  const rows = await sql`
+    SELECT id, name, slug FROM listings
+    WHERE id = ${id}
+      AND status IN ('verified', 'community_submitted')
+  `;
+  if (rows.length === 0) return null;
+  return rows[0] as unknown as { id: number; name: string; slug: string };
+}
+
+/**
  * Fetch published reviews for a listing.
  */
 export async function getListingReviews(
