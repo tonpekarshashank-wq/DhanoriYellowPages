@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+
+export const revalidate = 300;
 import { getListingBySlug, getListingReviews } from "@/lib/listings";
 import { getOpenStatus } from "@/lib/status";
 import { StatusTag } from "@/components/listings/StatusTag";

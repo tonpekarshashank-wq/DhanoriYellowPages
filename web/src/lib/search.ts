@@ -274,3 +274,85 @@ export async function getSubLocalities() {
   const sql = getSql();
   return sql`SELECT id, name, slug FROM sub_localities ORDER BY sort_order`;
 }
+
+/**
+ * Fetch a single category by slug.
+ */
+export async function getCategoryBySlug(slug: string) {
+  const sql = getSql();
+  const rows = await sql`SELECT id, name, slug, name_mr as "nameMarathi", name_hi as "nameHindi", is_emergency as "isEmergency" FROM categories WHERE slug = ${slug}`;
+  return rows[0] ?? null;
+}
+
+/**
+ * Fetch a single sub-locality by slug.
+ */
+export async function getSubLocalityBySlug(slug: string) {
+  const sql = getSql();
+  const rows = await sql`SELECT id, name, slug, name_mr as "nameMarathi", name_hi as "nameHindi", aliases FROM sub_localities WHERE slug = ${slug}`;
+  return rows[0] ?? null;
+}
+
+/**
+ * Fetch sub-categories for a category.
+ */
+export async function getSubCategoriesByCategoryId(categoryId: number) {
+  const sql = getSql();
+  return sql`SELECT id, name, slug FROM sub_categories WHERE category_id = ${categoryId} ORDER BY sort_order`;
+}
+
+/**
+ * Fetch listings for the emergency page — emergency category + emergency-available from other categories.
+ */
+export async function getEmergencyListings() {
+  const sql = getSql();
+  const rows = await sql`
+    SELECT
+      l.id, l.name, l.slug, l.primary_service as "primaryService",
+      l.description, l.phone, l.whatsapp, l.status,
+      l.rating_avg as "ratingAvg", l.rating_count as "ratingCount",
+      l.is_24x7 as "is24x7", l.emergency_available as "emergencyAvailable",
+      l.paid_plan as "paidPlan", l.plan_end_date as "planEndDate",
+      sl.name as "subLocalityName", sl.slug as "subLocalitySlug",
+      c.slug as "categorySlug", c.name as "categoryName",
+      c.is_emergency as "isEmergencyCategory",
+      lh.weekday, lh.opens, lh.closes,
+      0 as "textRank"
+    FROM listings l
+    JOIN sub_localities sl ON l.sub_locality_id = sl.id
+    JOIN categories c ON l.category_id = c.id
+    LEFT JOIN listing_hours lh ON l.id = lh.listing_id
+      AND lh.weekday = EXTRACT(DOW FROM NOW() AT TIME ZONE 'Asia/Kolkata')::int
+    WHERE l.status IN ('verified', 'community_submitted')
+      AND (c.is_emergency = true OR l.emergency_available = true)
+    ORDER BY c.is_emergency DESC, l.emergency_available DESC, l.name
+  `;
+  return rows as SearchResult[];
+}
+
+/**
+ * Fetch all category slugs (for static generation).
+ */
+export async function getAllCategorySlugs() {
+  const sql = getSql();
+  const rows = await sql`SELECT slug FROM categories ORDER BY sort_order`;
+  return rows as { slug: string }[];
+}
+
+/**
+ * Fetch all sub-locality slugs (for static generation).
+ */
+export async function getAllSubLocalitySlugs() {
+  const sql = getSql();
+  const rows = await sql`SELECT slug FROM sub_localities ORDER BY sort_order`;
+  return rows as { slug: string }[];
+}
+
+/**
+ * Fetch all listing slugs (for sitemap).
+ */
+export async function getAllListingSlugs() {
+  const sql = getSql();
+  const rows = await sql`SELECT slug, updated_at as "updatedAt" FROM listings WHERE status IN ('verified', 'community_submitted') ORDER BY updated_at DESC`;
+  return rows as { slug: string; updatedAt: string }[];
+}

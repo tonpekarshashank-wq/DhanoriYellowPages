@@ -1,0 +1,85 @@
+.page {
+  min-height: 100dvh;
+}
+
+.banner {
+  background: var(--danger-soft);
+  padding: 24px 0;
+}
+
+.bannerInner {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  color: var(--on-danger-soft);
+}
+
+.bannerSub {
+  color: var(--on-danger-soft);
+  opacity: 0.85;
+  margin-top: 4px;
+}
+
+/* Helpline grid */
+.helplines {
+  margin-bottom: 8px;
+}
+
+.helplineGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+@media (min-width: 768px) {
+  .helplineGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.helplineCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 16px;
+  border: 2px solid var(--danger-soft);
+  border-radius: 16px;
+  background: var(--surface-card);
+  text-decoration: none;
+  color: var(--ink);
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.helplineCard:hover {
+  box-shadow: var(--shadow-card);
+  border-color: var(--on-danger-soft);
+}
+
+.helplineCard svg {
+  color: var(--on-danger-soft);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.helplineNumber {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.2;
+}
+
+.helplineLabel {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-top: 2px;
+}
+
+.helplineNote {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+  margin-top: 2px;
+}
