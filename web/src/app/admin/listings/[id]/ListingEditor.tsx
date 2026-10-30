@@ -22,6 +22,9 @@ export function ListingEditor({
   const [saving, setSaving] = useState(false);
   const [result, setResult] = useState<{ ok: boolean; message: string } | null>(null);
   const [hours, setHours] = useState(initialHours);
+  const [planSaving, setPlanSaving] = useState(false);
+  const [currentPlan, setCurrentPlan] = useState(listing.paid_plan as string ?? "none");
+  const [planEnd, setPlanEnd] = useState(listing.plan_end_date as string | null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -181,6 +184,68 @@ export function ListingEditor({
             <input type="checkbox" name="emergencyAvailable" defaultChecked={listing.emergency_available as boolean} />
             Emergency available
           </label>
+        </fieldset>
+
+        {/* Paid Plan */}
+        <fieldset className={styles.fieldset}>
+          <legend className={styles.legend}>Paid Plan</legend>
+          <div style={{ fontSize: "0.875rem", color: "var(--ink-muted)", marginBottom: 8 }}>
+            Current: <strong style={{ color: "var(--ink)" }}>{currentPlan === "none" ? "Free" : currentPlan.replace("_", " ")}</strong>
+            {planEnd && currentPlan !== "none" && (
+              <> · Expires {new Date(planEnd).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</>
+            )}
+          </div>
+          <div style={{ display: "flex", gap: 8, alignItems: "flex-end", flexWrap: "wrap" }}>
+            <label className={styles.label} style={{ flex: 1, minWidth: 140 }}>
+              Plan
+              <select id="planSelect" defaultValue={currentPlan} className="input">
+                <option value="none">Free (none)</option>
+                <option value="promoted_slot">Promoted Slot</option>
+                <option value="ranking_boost">Ranking Boost</option>
+              </select>
+            </label>
+            <label className={styles.label} style={{ width: 100 }}>
+              Days
+              <input id="planDays" type="number" defaultValue={30} min={1} max={365} className="input" />
+            </label>
+            <button
+              type="button"
+              className="btn btn--outline"
+              disabled={planSaving}
+              style={{ marginBottom: 2 }}
+              onClick={async () => {
+                setPlanSaving(true);
+                const plan = (document.getElementById("planSelect") as HTMLSelectElement).value;
+                const days = (document.getElementById("planDays") as HTMLInputElement).value;
+                try {
+                  const res = await fetch(`/api/admin/listings/${listing.id}/plan`, {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ plan, durationDays: parseInt(days) }),
+                  });
+                  if (res.ok) {
+                    setCurrentPlan(plan);
+                    if (plan !== "none") {
+                      const end = new Date();
+                      end.setDate(end.getDate() + parseInt(days));
+                      setPlanEnd(end.toISOString());
+                    } else {
+                      setPlanEnd(null);
+                    }
+                    setResult({ ok: true, message: "Plan updated." });
+                  } else {
+                    setResult({ ok: false, message: "Failed to update plan." });
+                  }
+                } catch {
+                  setResult({ ok: false, message: "Network error." });
+                } finally {
+                  setPlanSaving(false);
+                }
+              }}
+            >
+              {planSaving ? "…" : "Set Plan"}
+            </button>
+          </div>
         </fieldset>
 
         {/* Hours */}

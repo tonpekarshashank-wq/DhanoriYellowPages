@@ -4,6 +4,7 @@ import type { Locale } from "@/lib/i18n";
 import { I18nProvider } from "@/components/i18n/I18nProvider";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { CookieConsent } from "@/components/ui/CookieConsent";
 
 export default async function PublicLayout({
   children,
@@ -19,6 +20,7 @@ export default async function PublicLayout({
       <Header />
       <main>{children}</main>
       <Footer />
+      <CookieConsent />
     </I18nProvider>
   );
 }

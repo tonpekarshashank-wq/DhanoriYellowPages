@@ -181,7 +181,7 @@ export async function searchListings(
         ${category ? sql`AND c.slug = ${category}` : sql``}
         ${subLocalityId ? sql`AND (sl.id = ${subLocalityId} OR ${subLocalityId} = ANY(l.serves_sub_localities))` : sql``}
         ${verifiedOnly ? sql`AND l.status = 'verified'` : sql``}
-      ORDER BY "textRank" DESC
+      ORDER BY l.paid_plan != 'none' AND l.plan_end_date > NOW() DESC, "textRank" DESC
       LIMIT ${limit} OFFSET ${offset}
     `;
 
