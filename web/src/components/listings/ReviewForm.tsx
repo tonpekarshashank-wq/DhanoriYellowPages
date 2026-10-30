@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { StarIcon } from "@/components/ui/Icons";
+import { useTranslation } from "@/components/i18n/I18nProvider";
 import styles from "./ReviewForm.module.css";
 
 interface ReviewFormProps {
@@ -10,6 +11,7 @@ interface ReviewFormProps {
 }
 
 export function ReviewForm({ listingId, listingName }: ReviewFormProps) {
+  const { t } = useTranslation();
   const [rating, setRating] = useState(0);
   const [hoveredStar, setHoveredStar] = useState(0);
   const [comment, setComment] = useState("");
@@ -42,25 +44,15 @@ export function ReviewForm({ listingId, listingName }: ReviewFormProps) {
       const data = await res.json();
 
       if (res.ok) {
-        setResult({
-          ok: true,
-          message:
-            "Thank you! Your review will appear after moderation.",
-        });
+        setResult({ ok: true, message: t("review.success") });
         setRating(0);
         setComment("");
         setDisplayName("");
       } else {
-        setResult({
-          ok: false,
-          message: data.error ?? "Something went wrong. Please try again.",
-        });
+        setResult({ ok: false, message: data.error ?? t("common.error") });
       }
     } catch {
-      setResult({
-        ok: false,
-        message: "Network error. Please check your connection.",
-      });
+      setResult({ ok: false, message: t("common.networkError") });
     } finally {
       setSubmitting(false);
     }
@@ -69,12 +61,11 @@ export function ReviewForm({ listingId, listingName }: ReviewFormProps) {
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
       <h3 className={`text-title-card font-display ${styles.title}`}>
-        Rate {listingName}
+        {t("review.title")} — {listingName}
       </h3>
 
-      {/* Star picker */}
       <fieldset className={styles.starPicker}>
-        <legend className="sr-only">Rating</legend>
+        <legend className="sr-only">{t("review.rating")}</legend>
         {[1, 2, 3, 4, 5].map((star) => (
           <button
             key={star}
@@ -105,10 +96,9 @@ export function ReviewForm({ listingId, listingName }: ReviewFormProps) {
         )}
       </fieldset>
 
-      {/* Name (optional) */}
       <input
         type="text"
-        placeholder="Your name (optional)"
+        placeholder={t("review.namePlaceholder")}
         value={displayName}
         onChange={(e) => setDisplayName(e.target.value)}
         maxLength={50}
@@ -116,9 +106,8 @@ export function ReviewForm({ listingId, listingName }: ReviewFormProps) {
         autoComplete="name"
       />
 
-      {/* Comment */}
       <textarea
-        placeholder="Share your experience (optional)"
+        placeholder={t("review.commentPlaceholder")}
         value={comment}
         onChange={(e) => setComment(e.target.value)}
         maxLength={1000}
@@ -126,7 +115,6 @@ export function ReviewForm({ listingId, listingName }: ReviewFormProps) {
         className="input"
       />
 
-      {/* Result message */}
       {result && (
         <p
           className={`text-meta ${styles.resultMsg}`}
@@ -136,13 +124,12 @@ export function ReviewForm({ listingId, listingName }: ReviewFormProps) {
         </p>
       )}
 
-      {/* Submit */}
       <button
         type="submit"
         className="btn btn--primary tap-target"
         disabled={rating === 0 || submitting}
       >
-        {submitting ? "Submitting…" : "Submit review"}
+        {submitting ? t("review.submitting") : t("review.submit")}
       </button>
     </form>
   );

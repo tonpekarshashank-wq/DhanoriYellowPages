@@ -1,4 +1,7 @@
 import type { Metadata, Viewport } from "next";
+import { cookies } from "next/headers";
+import { DEFAULT_LOCALE, LOCALE_COOKIE, isValidLocale } from "@/lib/i18n";
+import type { Locale } from "@/lib/i18n";
 import "@/styles/globals.css";
 
 export const metadata: Metadata = {
@@ -19,13 +22,23 @@ export const viewport: Viewport = {
   themeColor: "#0B3D66",
 };
 
-export default function RootLayout({
+const LANG_MAP: Record<Locale, string> = {
+  en: "en",
+  mr: "mr",
+  hi: "hi",
+};
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const raw = cookieStore.get(LOCALE_COOKIE)?.value ?? "";
+  const locale: Locale = isValidLocale(raw) ? raw : DEFAULT_LOCALE;
+
   return (
-    <html lang="en">
+    <html lang={LANG_MAP[locale]}>
       <body>{children}</body>
     </html>
   );

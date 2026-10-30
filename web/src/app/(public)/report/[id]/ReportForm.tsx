@@ -2,15 +2,16 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useTranslation } from "@/components/i18n/I18nProvider";
 import styles from "./page.module.css";
 
-const REASONS = [
-  { value: "incorrect_info", label: "Incorrect information" },
-  { value: "closed_permanently", label: "Permanently closed" },
-  { value: "spam", label: "Spam or fake listing" },
-  { value: "duplicate", label: "Duplicate listing" },
-  { value: "inappropriate", label: "Inappropriate content" },
-  { value: "other", label: "Other" },
+const REASON_KEYS = [
+  { value: "incorrect_info", key: "report.incorrectInfo" },
+  { value: "closed_permanently", key: "report.closedPermanently" },
+  { value: "spam", key: "report.spam" },
+  { value: "duplicate", key: "report.duplicate" },
+  { value: "inappropriate", key: "report.inappropriate" },
+  { value: "other", key: "report.other" },
 ];
 
 interface Props {
@@ -19,6 +20,7 @@ interface Props {
 }
 
 export function ReportForm({ listingId, listingName }: Props) {
+  const { t } = useTranslation();
   const [reason, setReason] = useState("");
   const [details, setDetails] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -43,13 +45,13 @@ export function ReportForm({ listingId, listingName }: Props) {
 
       if (!res.ok) {
         const data = await res.json();
-        setError(data.error || "Something went wrong.");
+        setError(data.error || t("common.error"));
         return;
       }
 
       setSuccess(true);
     } catch {
-      setError("Network error. Please try again.");
+      setError(t("common.networkError"));
     } finally {
       setSubmitting(false);
     }
@@ -58,13 +60,12 @@ export function ReportForm({ listingId, listingName }: Props) {
   if (success) {
     return (
       <div className={styles.success}>
-        <div className={styles.successTitle}>Report Submitted</div>
+        <div className={styles.successTitle}>{t("success.reportSubmitted")}</div>
         <p className="text-body">
-          Thank you for helping keep Dhanori Yellow Pages accurate.
-          Our team will review your report about <strong>{listingName}</strong>.
+          {t("success.reportThanks", { name: listingName })}
         </p>
         <Link href="/" className="btn btn--primary" style={{ marginTop: 16, display: "inline-block" }}>
-          Back to Home
+          {t("success.backToHome")}
         </Link>
       </div>
     );
@@ -76,10 +77,10 @@ export function ReportForm({ listingId, listingName }: Props) {
 
       <div className={styles.fieldGroup}>
         <label className={styles.label}>
-          Reason <span className={styles.required}>*</span>
+          {t("report.reason")} <span className={styles.required}>*</span>
         </label>
         <div className={styles.radioGroup}>
-          {REASONS.map((r) => (
+          {REASON_KEYS.map((r) => (
             <label key={r.value} className={styles.radioLabel}>
               <input
                 type="radio"
@@ -90,19 +91,19 @@ export function ReportForm({ listingId, listingName }: Props) {
                 className={styles.radio}
                 required
               />
-              {r.label}
+              {t(r.key)}
             </label>
           ))}
         </div>
       </div>
 
       <div className={styles.fieldGroup}>
-        <label className={styles.label}>Details</label>
+        <label className={styles.label}>{t("report.details")}</label>
         <textarea
           className={styles.textarea}
           value={details}
           onChange={(e) => setDetails(e.target.value)}
-          placeholder="Please provide any additional details that would help us investigate"
+          placeholder={t("report.detailsPlaceholder")}
           maxLength={1000}
           rows={4}
         />
@@ -114,7 +115,7 @@ export function ReportForm({ listingId, listingName }: Props) {
         disabled={submitting || !reason}
         style={{ alignSelf: "flex-start", padding: "12px 32px" }}
       >
-        {submitting ? "Submitting…" : "Submit Report"}
+        {submitting ? t("report.submitting") : t("report.submit")}
       </button>
     </form>
   );

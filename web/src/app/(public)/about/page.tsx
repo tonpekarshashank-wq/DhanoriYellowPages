@@ -1,95 +1,72 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { cookies } from "next/headers";
+import { getMessages, t, DEFAULT_LOCALE, LOCALE_COOKIE, isValidLocale } from "@/lib/i18n";
+import type { Locale } from "@/lib/i18n";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
   title: "About — Dhanori Yellow Pages",
   description:
-    "Dhanori Yellow Pages is a free, community-driven business directory for Dhanori, Pune. Find verified local businesses, emergency contacts, and services.",
+    "Dhanori Yellow Pages is a free, community-driven business directory for Dhanori, Pune.",
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const cookieStore = await cookies();
+  const raw = cookieStore.get(LOCALE_COOKIE)?.value ?? "";
+  const locale: Locale = isValidLocale(raw) ? raw : DEFAULT_LOCALE;
+  const msgs = getMessages(locale);
+
   return (
     <div className={styles.page}>
-      <h1 className="text-title-page font-display">About Dhanori Yellow Pages</h1>
+      <h1 className="text-title-page font-display">{t(msgs, "about.title")}</h1>
 
       <section className={styles.section}>
-        <p className="text-body">
-          Dhanori Yellow Pages is a free, community-driven directory of local
-          businesses and services in Dhanori, Pune. Our goal is simple: make it
-          easy for residents to find trusted, verified businesses in their
-          neighbourhood — from plumbers and electricians to doctors and grocery
-          stores.
-        </p>
+        <p className="text-body">{t(msgs, "about.introParagraph")}</p>
       </section>
 
       <section className={styles.section}>
-        <h2 className="text-title-section font-display">Why we built this</h2>
-        <p className="text-body">
-          Finding reliable local services in a growing area like Dhanori can be
-          frustrating. Google Maps listings are often outdated, phone numbers
-          change, and new businesses pop up faster than any map can track. We
-          wanted a directory that is maintained by and for the community — where
-          anyone can suggest a business, leave a review, and flag incorrect
-          information.
-        </p>
+        <h2 className="text-title-section font-display">{t(msgs, "about.whyTitle")}</h2>
+        <p className="text-body">{t(msgs, "about.whyParagraph")}</p>
       </section>
 
       <section className={styles.section}>
-        <h2 className="text-title-section font-display">How it works</h2>
+        <h2 className="text-title-section font-display">{t(msgs, "about.howTitle")}</h2>
         <ul className={styles.list}>
-          <li>
-            <strong>Search & browse</strong> — Find businesses by name, service,
-            category, or area. Filter by open now, verified, or emergency
-            availability.
-          </li>
-          <li>
-            <strong>Verified listings</strong> — Our team verifies business
-            details by calling them directly. Look for the verified badge.
-          </li>
-          <li>
-            <strong>Community reviews</strong> — Rate and review businesses
-            you&apos;ve used. All reviews are moderated before publishing.
-          </li>
-          <li>
-            <strong>Emergency contacts</strong> — Quick access to police, fire,
-            ambulance, and other emergency helplines — always one tap away.
-          </li>
+          <li><strong>{t(msgs, "about.howSearch")}</strong></li>
+          <li><strong>{t(msgs, "about.howVerified")}</strong></li>
+          <li><strong>{t(msgs, "about.howReviews")}</strong></li>
+          <li><strong>{t(msgs, "about.howEmergency")}</strong></li>
         </ul>
       </section>
 
       <section className={styles.section}>
-        <h2 className="text-title-section font-display">Get involved</h2>
+        <h2 className="text-title-section font-display">{t(msgs, "about.involvedTitle")}</h2>
         <div className={styles.cards}>
           <Link href="/add-business" className={styles.card}>
-            <strong>Add your business</strong>
+            <strong>{t(msgs, "about.addYourBusiness")}</strong>
             <span className="text-meta" style={{ color: "var(--ink-muted)" }}>
-              Own a business in Dhanori? List it for free.
+              {t(msgs, "about.addYourBusinessDesc")}
             </span>
           </Link>
           <Link href="/suggest" className={styles.card}>
-            <strong>Suggest a business</strong>
+            <strong>{t(msgs, "about.suggestBusiness")}</strong>
             <span className="text-meta" style={{ color: "var(--ink-muted)" }}>
-              Know a great local place? Tell us about it.
+              {t(msgs, "about.suggestBusinessDesc")}
             </span>
           </Link>
         </div>
       </section>
 
       <section className={styles.section}>
-        <h2 className="text-title-section font-display">Coverage area</h2>
-        <p className="text-body">
-          We cover Dhanori and its surrounding sub-localities including
-          Dhanori Gaon, Vishrantwadi, Lohegaon, Dhanori Phata, Kalas, and more.
-          If your business serves the Dhanori area, it belongs here.
-        </p>
+        <h2 className="text-title-section font-display">{t(msgs, "about.coverageTitle")}</h2>
+        <p className="text-body">{t(msgs, "about.coverageParagraph")}</p>
       </section>
 
       <section className={styles.section}>
-        <h2 className="text-title-section font-display">Contact</h2>
+        <h2 className="text-title-section font-display">{t(msgs, "about.contactTitle")}</h2>
         <p className="text-body">
-          Have questions, feedback, or need help with your listing?
-          Email us at{" "}
+          {t(msgs, "about.contactParagraph")}{" "}
           <a href="mailto:hello@dhanoriyellowpages.in" className={styles.link}>
             hello@dhanoriyellowpages.in
           </a>
