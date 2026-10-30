@@ -106,66 +106,66 @@ export function AddBusinessForm({ categories, subLocalities, type }: Props) {
       <div className={styles.fieldGroup}>
         <label className={styles.label}>
           {t("addBusiness.businessName")} <span className={styles.required}>*</span>
+          <input
+            type="text"
+            className={styles.input}
+            value={form.name}
+            onChange={(e) => update("name", e.target.value)}
+            placeholder={t("addBusiness.businessNamePlaceholder")}
+            required
+            maxLength={200}
+          />
         </label>
-        <input
-          type="text"
-          className={styles.input}
-          value={form.name}
-          onChange={(e) => update("name", e.target.value)}
-          placeholder={t("addBusiness.businessNamePlaceholder")}
-          required
-          maxLength={200}
-        />
       </div>
 
       <div className={styles.fieldGroup}>
         <label className={styles.label}>
           {t("addBusiness.primaryService")} <span className={styles.required}>*</span>
+          <input
+            type="text"
+            className={styles.input}
+            value={form.primaryService}
+            onChange={(e) => update("primaryService", e.target.value)}
+            placeholder={t("addBusiness.primaryServicePlaceholder")}
+            required
+            maxLength={200}
+          />
         </label>
-        <input
-          type="text"
-          className={styles.input}
-          value={form.primaryService}
-          onChange={(e) => update("primaryService", e.target.value)}
-          placeholder={t("addBusiness.primaryServicePlaceholder")}
-          required
-          maxLength={200}
-        />
       </div>
 
       <div className={styles.row}>
         <div className={styles.fieldGroup}>
           <label className={styles.label}>
             {t("addBusiness.category")} <span className={styles.required}>*</span>
+            <select
+              className={styles.select}
+              value={form.categorySlug}
+              onChange={(e) => update("categorySlug", e.target.value)}
+              required
+            >
+              <option value="">{t("addBusiness.selectCategory")}</option>
+              {categories.map((c) => (
+                <option key={c.slug} value={c.slug}>{c.name}</option>
+              ))}
+            </select>
           </label>
-          <select
-            className={styles.select}
-            value={form.categorySlug}
-            onChange={(e) => update("categorySlug", e.target.value)}
-            required
-          >
-            <option value="">{t("addBusiness.selectCategory")}</option>
-            {categories.map((c) => (
-              <option key={c.slug} value={c.slug}>{c.name}</option>
-            ))}
-          </select>
         </div>
 
         <div className={styles.fieldGroup}>
           <label className={styles.label}>
             {t("addBusiness.area")} <span className={styles.required}>*</span>
+            <select
+              className={styles.select}
+              value={form.subLocalitySlug}
+              onChange={(e) => update("subLocalitySlug", e.target.value)}
+              required
+            >
+              <option value="">{t("addBusiness.selectArea")}</option>
+              {subLocalities.map((sl) => (
+                <option key={sl.slug} value={sl.slug}>{sl.name}</option>
+              ))}
+            </select>
           </label>
-          <select
-            className={styles.select}
-            value={form.subLocalitySlug}
-            onChange={(e) => update("subLocalitySlug", e.target.value)}
-            required
-          >
-            <option value="">{t("addBusiness.selectArea")}</option>
-            {subLocalities.map((sl) => (
-              <option key={sl.slug} value={sl.slug}>{sl.name}</option>
-            ))}
-          </select>
         </div>
       </div>
 
@@ -175,78 +175,88 @@ export function AddBusinessForm({ categories, subLocalities, type }: Props) {
         <div className={styles.fieldGroup}>
           <label className={styles.label}>
             {t("addBusiness.phone")} <span className={styles.required}>*</span>
+            <input
+              type="tel"
+              className={styles.input}
+              value={form.phone}
+              onChange={(e) => update("phone", e.target.value)}
+              placeholder={t("addBusiness.phonePlaceholder")}
+              required
+              maxLength={20}
+            />
           </label>
-          <input
-            type="tel"
-            className={styles.input}
-            value={form.phone}
-            onChange={(e) => update("phone", e.target.value)}
-            placeholder={t("addBusiness.phonePlaceholder")}
-            required
-            maxLength={20}
-          />
         </div>
         <div className={styles.fieldGroup}>
-          <label className={styles.label}>{t("addBusiness.whatsapp")}</label>
-          <input
-            type="tel"
-            className={styles.input}
-            value={form.whatsapp}
-            onChange={(e) => update("whatsapp", e.target.value)}
-            placeholder={t("addBusiness.whatsappPlaceholder")}
-            maxLength={20}
-          />
+          <label className={styles.label}>
+            {t("addBusiness.whatsapp")}
+            <input
+              type="tel"
+              className={styles.input}
+              value={form.whatsapp}
+              onChange={(e) => update("whatsapp", e.target.value)}
+              placeholder={t("addBusiness.whatsappPlaceholder")}
+              maxLength={20}
+            />
+          </label>
         </div>
       </div>
 
       <div className={styles.fieldGroup}>
-        <label className={styles.label}>{t("addBusiness.address")}</label>
-        <input
-          type="text"
-          className={styles.input}
-          value={form.address}
-          onChange={(e) => update("address", e.target.value)}
-          placeholder={t("addBusiness.addressPlaceholder")}
-          maxLength={500}
-        />
+        <label className={styles.label}>
+          {t("addBusiness.address")}
+          <input
+            type="text"
+            className={styles.input}
+            value={form.address}
+            onChange={(e) => update("address", e.target.value)}
+            placeholder={t("addBusiness.addressPlaceholder")}
+            maxLength={500}
+          />
+        </label>
       </div>
 
       <div className={styles.fieldGroup}>
-        <label className={styles.label}>{t("addBusiness.landmark")}</label>
-        <input
-          type="text"
-          className={styles.input}
-          value={form.landmark}
-          onChange={(e) => update("landmark", e.target.value)}
-          placeholder={t("addBusiness.landmarkPlaceholder")}
-          maxLength={200}
-        />
+        <label className={styles.label}>
+          {t("addBusiness.landmark")}
+          <input
+            type="text"
+            className={styles.input}
+            value={form.landmark}
+            onChange={(e) => update("landmark", e.target.value)}
+            placeholder={t("addBusiness.landmarkPlaceholder")}
+            maxLength={200}
+          />
+        </label>
       </div>
 
       <hr className={styles.divider} />
 
       <div className={styles.fieldGroup}>
-        <label className={styles.label}>{t("addBusiness.description")}</label>
-        <textarea
-          className={styles.textarea}
-          value={form.description}
-          onChange={(e) => update("description", e.target.value)}
-          placeholder={t("addBusiness.descriptionPlaceholder")}
-          maxLength={2000}
-          rows={3}
-        />
+        <label className={styles.label}>
+          {t("addBusiness.description")}
+          <textarea
+            className={styles.textarea}
+            value={form.description}
+            onChange={(e) => update("description", e.target.value)}
+            placeholder={t("addBusiness.descriptionPlaceholder")}
+            maxLength={2000}
+            rows={3}
+          />
+        </label>
       </div>
 
       <div className={styles.fieldGroup}>
-        <label className={styles.label}>{t("addBusiness.servicesOffered")}</label>
-        <input
-          type="text"
-          className={styles.input}
-          value={form.services}
-          onChange={(e) => update("services", e.target.value)}
-          placeholder={t("addBusiness.servicesPlaceholder")}
-          maxLength={500}
-        />
+        <label className={styles.label}>
+          {t("addBusiness.servicesOffered")}
+          <input
+            type="text"
+            className={styles.input}
+            value={form.services}
+            onChange={(e) => update("services", e.target.value)}
+            placeholder={t("addBusiness.servicesPlaceholder")}
+            maxLength={500}
+          />
+        </label>
       </div>
 
       {type === "suggestion" && (
@@ -254,29 +264,33 @@ export function AddBusinessForm({ categories, subLocalities, type }: Props) {
           <hr className={styles.divider} />
           <div className={styles.row}>
             <div className={styles.fieldGroup}>
-              <label className={styles.label}>{t("addBusiness.yourName")}</label>
-              <input
-                type="text"
-                className={styles.input}
-                value={form.submitterName}
-                onChange={(e) => update("submitterName", e.target.value)}
-                placeholder={t("common.optional")}
-                maxLength={100}
-              />
+              <label className={styles.label}>
+                {t("addBusiness.yourName")}
+                <input
+                  type="text"
+                  className={styles.input}
+                  value={form.submitterName}
+                  onChange={(e) => update("submitterName", e.target.value)}
+                  placeholder={t("common.optional")}
+                  maxLength={100}
+                />
+              </label>
             </div>
             <div className={styles.fieldGroup}>
-              <label className={styles.label}>{t("addBusiness.yourRelation")}</label>
-              <select
-                className={styles.select}
-                value={form.submitterRelation}
-                onChange={(e) => update("submitterRelation", e.target.value)}
-              >
-                <option value="">{t("addBusiness.selectRelation")}</option>
-                <option value="customer">{t("addBusiness.relationCustomer")}</option>
-                <option value="neighbor">{t("addBusiness.relationNeighbor")}</option>
-                <option value="friend">{t("addBusiness.relationFriend")}</option>
-                <option value="other">{t("addBusiness.relationOther")}</option>
-              </select>
+              <label className={styles.label}>
+                {t("addBusiness.yourRelation")}
+                <select
+                  className={styles.select}
+                  value={form.submitterRelation}
+                  onChange={(e) => update("submitterRelation", e.target.value)}
+                >
+                  <option value="">{t("addBusiness.selectRelation")}</option>
+                  <option value="customer">{t("addBusiness.relationCustomer")}</option>
+                  <option value="neighbor">{t("addBusiness.relationNeighbor")}</option>
+                  <option value="friend">{t("addBusiness.relationFriend")}</option>
+                  <option value="other">{t("addBusiness.relationOther")}</option>
+                </select>
+              </label>
             </div>
           </div>
         </>

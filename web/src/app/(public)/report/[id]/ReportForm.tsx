@@ -98,15 +98,17 @@ export function ReportForm({ listingId, listingName }: Props) {
       </div>
 
       <div className={styles.fieldGroup}>
-        <label className={styles.label}>{t("report.details")}</label>
-        <textarea
-          className={styles.textarea}
-          value={details}
-          onChange={(e) => setDetails(e.target.value)}
-          placeholder={t("report.detailsPlaceholder")}
-          maxLength={1000}
-          rows={4}
-        />
+        <label className={styles.label}>
+          {t("report.details")}
+          <textarea
+            className={styles.textarea}
+            value={details}
+            onChange={(e) => setDetails(e.target.value)}
+            placeholder={t("report.detailsPlaceholder")}
+            maxLength={1000}
+            rows={4}
+          />
+        </label>
       </div>
 
       <button

@@ -104,6 +104,7 @@ export function ReviewForm({ listingId, listingName }: ReviewFormProps) {
         maxLength={50}
         className="input"
         autoComplete="name"
+        aria-label={t("review.namePlaceholder")}
       />
 
       <textarea
@@ -113,6 +114,7 @@ export function ReviewForm({ listingId, listingName }: ReviewFormProps) {
         maxLength={1000}
         rows={3}
         className="input"
+        aria-label={t("review.commentPlaceholder")}
       />
 
       {result && (
